@@ -6,16 +6,20 @@ using Emgu.CV.Structure;
 using System.Drawing;
 using System.Windows.Forms;
 
+
+
 namespace FaceDetector
 {
     class FaceDetector
     {
-
+        
         public void TemplateMatching()
         {
             List<Point> poins = new List<Point>();
-            Mat answeredPic = CvInvoke.Imread(@"C:\Users\Fantomext\source\repos\FaceDetector\FaceDetector\Artem.jpg");
-            Mat aWasnsweredPic = CvInvoke.Imread(@"C:\Users\Fantomext\source\repos\FaceDetector\FaceDetector\ArtemEye.jpg");
+            Mat answeredPic = CvInvoke.Imread("Artem.jpg");
+            Mat aWasnsweredPic = CvInvoke.Imread("partOfFace.jpg");
+
+            
 
             Mat templateOutput = new Mat();
 
@@ -46,9 +50,11 @@ namespace FaceDetector
             center.X = center.X / poins.Count;
             center.Y = center.Y / poins.Count;
 
-            System.Drawing.Rectangle rect = new System.Drawing.Rectangle(center, aWasnsweredPic.Size);
+            Rectangle rect = new Rectangle(center, aWasnsweredPic.Size);
 
-            CvInvoke.Rectangle(answeredPic, rect, new Emgu.CV.Structure.MCvScalar(0, 0, 240), 2);
+            CvInvoke.Rectangle(answeredPic, rect, new MCvScalar(0, 0, 240), 2);
+
+            answeredPic.Save("resultMatch.jpg");
 
             CvInvoke.Imshow("template", answeredPic);
 
@@ -57,16 +63,58 @@ namespace FaceDetector
 
         public void ViolaDetection()
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            if (dialog.ShowDialog()== DialogResult.OK)
+            Image<Bgr, byte> image = new Image<Bgr, byte>("photo_2023-05-22_11-33-29.jpg");
+            CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
+            var faces = faceCascade.DetectMultiScale(image);
+            foreach (var face in faces)
             {
-                Image<Bgr, byte> imgInput = new Image<Bgr, byte>(dialog.FileName);
-                
+                image.Draw(face, new Bgr(Color.Green), 2);
             }
-            else
-            {
-                throw new Exception("Не выбран файл");
-            }
+
+            image.Save("resultMatchArt.jpg");
+            CvInvoke.Imshow("Wtf", image);
+            CvInvoke.WaitKey();
+        }
+
+        public void CenterLine()
+        {
+            Image<Bgr, byte> image = new Image<Bgr, byte>("myPhoto.jpg");
+            CascadeClassifier noseCascade = new CascadeClassifier("haarcascade_mcs_nose.xml");
+            CascadeClassifier eyeCascade = new CascadeClassifier("haarcascade_eye.xml");
+            var noses = noseCascade.DetectMultiScale(image, 3, 1);
+
+            LineSegment2D centralLine = new LineSegment2D(new Point(noses[0].X + noses[0].Width/2, 0), new Point(noses[0].X + noses[0].Width/2, image.Height));
+
+            CvInvoke.Line(image, centralLine.P1, centralLine.P2, new MCvScalar(0, 0, 240));
+
+            //foreach (var nose in noses)
+            //{
+            //    image.Draw(nose, new Bgr(Color.Green), 2);
+            //}
+
+            var eyes = eyeCascade.DetectMultiScale(image, 1.3, 3);
+
+            //foreach (var eye in eyes)
+            //{
+            //    image.Draw(eye, new Bgr(Color.Green), 2);
+            //}
+
+            LineSegment2D leftLine = LineCreator(eyes[0]);
+            LineSegment2D rightLine = LineCreator(eyes[1]);
+
+            CvInvoke.Line(image, leftLine.P1, leftLine.P2, new MCvScalar(0, 0, 240));
+            CvInvoke.Line(image, rightLine.P1, rightLine.P2, new MCvScalar(0, 0, 240));
+
+            image.Save("resultMatchArt.jpg");
+            CvInvoke.Imshow("Center", image);
+            CvInvoke.WaitKey();
+
+        }
+
+        public LineSegment2D LineCreator(Rectangle rect)
+        {
+            LineSegment2D line = new LineSegment2D(new Point(rect.X + rect.Width / 2, 0), new Point(rect.X + rect.Width / 2, 1920));
+            return line;
         }
     }
 }

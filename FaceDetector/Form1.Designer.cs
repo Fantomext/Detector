@@ -32,7 +32,7 @@ namespace FaceDetector
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.FaceRec = new System.Windows.Forms.Button();
             this.ViolaJonsBut = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.CenterButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,15 +64,22 @@ namespace FaceDetector
             this.ViolaJonsBut.UseVisualStyleBackColor = true;
             this.ViolaJonsBut.Click += new System.EventHandler(this.ViolaJonsBut_Click);
             // 
-            // openFileDialog1
+            // CenterButton
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.CenterButton.Location = new System.Drawing.Point(321, 383);
+            this.CenterButton.Name = "CenterButton";
+            this.CenterButton.Size = new System.Drawing.Size(113, 55);
+            this.CenterButton.TabIndex = 3;
+            this.CenterButton.Text = "Center";
+            this.CenterButton.UseVisualStyleBackColor = true;
+            this.CenterButton.Click += new System.EventHandler(this.CenterButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(789, 450);
+            this.Controls.Add(this.CenterButton);
             this.Controls.Add(this.ViolaJonsBut);
             this.Controls.Add(this.FaceRec);
             this.Controls.Add(this.pictureBox1);
@@ -88,7 +95,7 @@ namespace FaceDetector
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button FaceRec;
         private System.Windows.Forms.Button ViolaJonsBut;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button CenterButton;
     }
 }
 
