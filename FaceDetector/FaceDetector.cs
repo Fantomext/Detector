@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Emgu;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
@@ -16,7 +17,7 @@ namespace FaceDetector
         public void TemplateMatching()
         {
             List<Point> poins = new List<Point>();
-            Mat answeredPic = CvInvoke.Imread("Artem.jpg");
+            Mat answeredPic = CvInvoke.Imread("myPhoto.jpg");
             Mat aWasnsweredPic = CvInvoke.Imread("partOfFace.jpg");
 
             
@@ -63,9 +64,9 @@ namespace FaceDetector
 
         public void ViolaDetection()
         {
-            Image<Bgr, byte> image = new Image<Bgr, byte>("photo_2023-05-22_11-33-29.jpg");
+            Image<Bgr, byte> image = new Image<Bgr, byte>("17374.jpg");
             CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
-            var faces = faceCascade.DetectMultiScale(image);
+            var faces = faceCascade.DetectMultiScale(image, 1.25, 3);
             foreach (var face in faces)
             {
                 image.Draw(face, new Bgr(Color.Green), 2);
@@ -116,6 +117,8 @@ namespace FaceDetector
             LineSegment2D line = new LineSegment2D(new Point(rect.X + rect.Width / 2, 0), new Point(rect.X + rect.Width / 2, 1920));
             return line;
         }
+
+        
     }
 }
 
