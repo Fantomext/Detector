@@ -18,15 +18,18 @@ namespace FaceDetector
         {
             List<Point> poins = new List<Point>();
             Mat answeredPic = CvInvoke.Imread("myPhoto.jpg");
-            Mat aWasnsweredPic = CvInvoke.Imread("partOfFace.jpg");
-
-            
+            Mat aWasnsweredPic = CvInvoke.Imread("PartOfFaceMouth.jpg");
 
             Mat templateOutput = new Mat();
 
+            
             CvInvoke.MatchTemplate(answeredPic, aWasnsweredPic, templateOutput, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed);
 
+            CvInvoke.Imshow("templateOutput", templateOutput);
+
             CvInvoke.Threshold(templateOutput, templateOutput, 0.8431d, 2, Emgu.CV.CvEnum.ThresholdType.ToZero);
+
+            CvInvoke.Imshow("templateOutput", templateOutput);
 
             var matches = templateOutput.ToImage<Gray, byte>();
 

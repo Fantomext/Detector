@@ -30,11 +30,12 @@ namespace FaceDetector
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Button Hist;
             this.FaceRec = new System.Windows.Forms.Button();
             this.ViolaJonsBut = new System.Windows.Forms.Button();
             this.CenterButton = new System.Windows.Forms.Button();
             this.histogramBox1 = new Emgu.CV.UI.HistogramBox();
-            this.button1 = new System.Windows.Forms.Button();
+            Hist = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.histogramBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,22 +77,22 @@ namespace FaceDetector
             this.histogramBox1.TabIndex = 2;
             this.histogramBox1.TabStop = false;
             // 
-            // button1
+            // Hist
             // 
-            this.button1.Location = new System.Drawing.Point(442, 391);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(107, 47);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            Hist.Location = new System.Drawing.Point(442, 391);
+            Hist.Name = "Hist";
+            Hist.Size = new System.Drawing.Size(107, 47);
+            Hist.TabIndex = 4;
+            Hist.Text = "Hist";
+            Hist.UseVisualStyleBackColor = true;
+            Hist.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(789, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(Hist);
             this.Controls.Add(this.histogramBox1);
             this.Controls.Add(this.CenterButton);
             this.Controls.Add(this.ViolaJonsBut);
@@ -108,7 +109,7 @@ namespace FaceDetector
         private System.Windows.Forms.Button ViolaJonsBut;
         private System.Windows.Forms.Button CenterButton;
         private Emgu.CV.UI.HistogramBox histogramBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Hist;
     }
 }
 
