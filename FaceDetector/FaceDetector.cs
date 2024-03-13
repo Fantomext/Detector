@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Emgu;
+﻿using System.Collections.Generic;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
-using System.Windows.Forms;
+
 
 
 
@@ -17,17 +14,17 @@ namespace FaceDetector
         public void TemplateMatching()
         {
             List<Point> poins = new List<Point>();
+
             Mat answeredPic = CvInvoke.Imread("myPhoto.jpg");
-            Mat aWasnsweredPic = CvInvoke.Imread("PartOfFaceMouth.jpg");
+            Mat aWasnsweredPic = CvInvoke.Imread("Template/Mouth.png");
 
             Mat templateOutput = new Mat();
-
             
             CvInvoke.MatchTemplate(answeredPic, aWasnsweredPic, templateOutput, Emgu.CV.CvEnum.TemplateMatchingType.CcoeffNormed);
 
             CvInvoke.Imshow("templateOutput", templateOutput);
 
-            CvInvoke.Threshold(templateOutput, templateOutput, 0.8431d, 2, Emgu.CV.CvEnum.ThresholdType.ToZero);
+            CvInvoke.Threshold(templateOutput, templateOutput, 0, 2, Emgu.CV.CvEnum.ThresholdType.ToZero);
 
             CvInvoke.Imshow("templateOutput", templateOutput);
 
@@ -37,33 +34,38 @@ namespace FaceDetector
             {
                 for (int y = 0; y < matches.Cols; y++)
                 {
-                    if (matches[i, y].Intensity > 0.55)
+                    if (matches[i, y].Intensity > 0.0)
                     {
                         poins.Add(new Point(y, i));
                     }
                 }
             }
 
-            Point center = poins[0];
-            for (int i = 1; i < poins.Count; i++)
+            if (poins.Count != 0)
             {
-                center.X += poins[i].X;
-                center.Y += poins[i].Y;
+                Point center = poins[0];
+                for (int i = 1; i < poins.Count; i++)
+                {
+                    center.X += poins[i].X;
+                    center.Y += poins[i].Y;
+                }
+
+                center.X = center.X / poins.Count;
+                center.Y = center.Y / poins.Count;
+
+                Rectangle rect = new Rectangle(center, aWasnsweredPic.Size);
+
+                CvInvoke.Rectangle(answeredPic, rect, new MCvScalar(0, 0, 240), 2);
+
+                answeredPic.Save("resultMatch.jpg");
+
+                CvInvoke.Imshow("template", answeredPic);
+
+                CvInvoke.WaitKey();
             }
-
-            center.X = center.X / poins.Count;
-            center.Y = center.Y / poins.Count;
-
-            Rectangle rect = new Rectangle(center, aWasnsweredPic.Size);
-
-            CvInvoke.Rectangle(answeredPic, rect, new MCvScalar(0, 0, 240), 2);
-
-            answeredPic.Save("resultMatch.jpg");
-
-            CvInvoke.Imshow("template", answeredPic);
-
-            CvInvoke.WaitKey();
+            
         }
+
 
         public void ViolaDetection()
         {
@@ -91,17 +93,7 @@ namespace FaceDetector
 
             CvInvoke.Line(image, centralLine.P1, centralLine.P2, new MCvScalar(0, 0, 240));
 
-            //foreach (var nose in noses)
-            //{
-            //    image.Draw(nose, new Bgr(Color.Green), 2);
-            //}
-
             var eyes = eyeCascade.DetectMultiScale(image, 1.3, 3);
-
-            //foreach (var eye in eyes)
-            //{
-            //    image.Draw(eye, new Bgr(Color.Green), 2);
-            //}
 
             LineSegment2D leftLine = LineCreator(eyes[0]);
             LineSegment2D rightLine = LineCreator(eyes[1]);
@@ -120,8 +112,6 @@ namespace FaceDetector
             LineSegment2D line = new LineSegment2D(new Point(rect.X + rect.Width / 2, 0), new Point(rect.X + rect.Width / 2, 1920));
             return line;
         }
-
-        
     }
 }
 
